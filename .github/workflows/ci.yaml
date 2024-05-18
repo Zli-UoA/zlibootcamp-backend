@@ -1,0 +1,34 @@
+name: Build Changed Directories
+
+on:
+  push:
+    paths:
+      - '**/*.go'
+  pull_request:
+    paths:
+      - '**/*.go'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Go
+      uses: actions/setup-go@v5
+
+    - name: Find changed directories
+      id: find-changed-dirs
+      run: |
+        echo "::set-output name=changed_dirs::$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '.go' | xargs -I {} dirname {} | sort -u)"
+
+    - name: Build changed directories
+      run: |
+        for dir in ${{ steps.find-changed-dirs.outputs.changed_dirs }}; do
+          echo "Building $dir"
+          cd $dir
+          go build .
+          cd -
+        done
