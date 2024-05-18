@@ -1,0 +1,40 @@
+name: CI
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+
+- name: Get changed files
+      id: changes
+      run: |
+        CHANGED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '.go$' | xargs dirname | sort | uniq)
+        echo "CHANGED_DIRS=$CHANGED_FILES" >> $GITHUB_ENV
+
+    - name: List changed directories
+      run: echo ${{ env.CHANGED_DIRS }}
+
+    - name: Run tests on changed directories
+      if: env.CHANGED_DIRS != ''
+      run: |
+        for dir in ${{ env.CHANGED_DIRS }}; do
+          echo "Running tests in directory: $dir"
+          go test -v ./$dir/... || exit 1
+        done
