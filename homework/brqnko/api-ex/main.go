@@ -84,7 +84,6 @@ func main() {
 
 	r.GET("/tweets/:id", func(c *gin.Context) {
 		id, err := strconv.Atoi(c.Param("id")) // URLの:idを取得
-
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
 				"error": "Invalid ID",
@@ -93,7 +92,7 @@ func main() {
 
 		for _, tweet := range tweets {
 			if tweet.ID == id { // ツイートを更新
-				c.JSON(http.StatusOK, tweet.Text) // HTTPステータスコード200(OK)で、更新されたツイートを返す
+				c.JSON(http.StatusOK, tweet) // HTTPステータスコード200(OK)で、更新されたツイートを返す
 				return
 			}
 		}
@@ -101,7 +100,6 @@ func main() {
 
 	r.POST("/tweets/:id/like", func(ctx *gin.Context) {
 		id, err := strconv.Atoi(ctx.Param("id"))
-
 		if err != nil {
 			ctx.JSON(http.StatusBadRequest, gin.H{
 				"error": "Invalid ID",
@@ -115,9 +113,9 @@ func main() {
 				return
 			}
 		}
-	})
 
-	// Read機能以降はこの下に追記していきます
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "Tweet not found"})
+	})
 
 	r.Run(":8080") // ポート8080でサーバーを起動
 }
