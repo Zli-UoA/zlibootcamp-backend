@@ -17,7 +17,7 @@ type Tweet struct {
 
 // Tweetのスライスを定義。ここの変数にツイートが格納される
 var tweets = []Tweet{
-	{ID: 1, Text: "Hello, World!"},
+	{ID: 1, Text: "Hello, World!", Like: 0},
 }
 
 var nextID = 2
@@ -31,6 +31,7 @@ func main() {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
+		newTweet.Like = 0
 		newTweet.ID = nextID                 // IDを設定
 		nextID++                             // 次のIDを+1
 		tweets = append(tweets, newTweet)    // ツイートを追加
