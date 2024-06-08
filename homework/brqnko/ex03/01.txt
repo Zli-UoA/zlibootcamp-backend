@@ -1,0 +1,10 @@
+1. CREATE TABLE users(id INTEGER PRIMARY KEY, name TEXT, age INTEGER);
+   INSERT INTO users(name, age) VALUES("Alice", 20);
+   INSERT INTO users(name, age) VALUES("Bob", 25);
+2. SELECT * FROM users;
+3. UPDATE users SET name = "Charlie";
+4. DELETE FROM users where id = 2;
+5. SELECT * FROM users WHERE name = "Alice";
+6. SELECT * FROM users WHERE age >= 20;
+7. SELECT * FROM users WHERE name = "Alice" and age >= 20;
+8. SELECT * FROM users WHERE age >= 20 or name LIKE "%b";

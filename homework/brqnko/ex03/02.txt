@@ -1,0 +1,1 @@
+2. SELECT students.name from students INNER JOIN exam_results ON students.id = exam_results.student_id where score <= 30;
