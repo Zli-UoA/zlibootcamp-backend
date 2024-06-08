@@ -1,0 +1,1 @@
+SELECT * FROM users WHERE age >= 20 OR name like ('%b');
