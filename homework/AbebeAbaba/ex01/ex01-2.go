@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-func main() {
+func mai() {
 	a := 3
 	b := 5
 	fmt.Println("a + b = " + fmt.Sprint(a+b)) // 8
